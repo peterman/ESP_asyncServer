@@ -1,0 +1,6 @@
+[{"rssi":-70,"ssid":"WLAN-Gast","bssid":"4E:5E:0C:CC:B3:67","channel":1,"secure":7,"hidden":false},
+{"rssi":-39,"ssid":"devwifi","bssid":"7C:E9:D3:F6:E5:9A","channel":1,"secure":4,"hidden":false},
+{"rssi":-71,"ssid":"MobileDevices-DD","bssid":"4E:5E:0C:CC:B3:65","channel":1,"secure":255,"hidden":false},
+{"rssi":-79,"ssid":"HPCM1415-4d263b","bssid":"38:59:F9:4D:26:3B","channel":6,"secure":7,"hidden":false},
+{"rssi":-87,"ssid":"AndroidAP3C08","bssid":"48:27:EA:C8:3C:08","channel":1,"secure":4,"hidden":false},
+{"rssi":-78,"ssid":"funkverkehr","bssid":"78:8A:20:84:1A:B9","channel":1,"secure":4,"hidden":false}]
