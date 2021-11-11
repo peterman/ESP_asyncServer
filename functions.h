@@ -107,9 +107,10 @@ void Save_Wifiscan_Result(){
     delay(500);
     Serial.print(".");
   }
-  Serial.println("end wait");
+  Serial.println("end scanning");
   int n = WiFi.scanComplete();
   Serial.printf("%d Networks found", n);
+  Serial.println();
   String json = "[";
   if(n){
     for (int i = 0; i < n; ++i){

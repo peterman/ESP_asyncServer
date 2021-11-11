@@ -1,3 +1,4 @@
+
 #include <ArduinoOTA.h>
 #include <ESP8266WiFi.h>
 #include <ESPAsyncTCP.h>
@@ -15,7 +16,7 @@ AsyncEventSource events("/events");
 #include "websockets.h";
 #include "parameter.h";
 #include "functions.h";
-
+#include "crontab.h";
 
 void setup(){
   Serial.begin(115200);
@@ -139,38 +140,22 @@ void setup(){
     if(index + len == total)
       Serial.printf("BodyEnd: %u\n", total);
   });
-//-------------------------------------------------------------------------
-//First request will return 0 results unless you start scan from somewhere else (loop/setup)
-//Do not request more often than 3-5 seconds
-server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request){
-  String json = "[";
-  int n = WiFi.scanComplete();
-  Serial.printf("%d Networks found", n);
-    
-  if(n == -2){
-    WiFi.scanNetworks(true);
-  } else if(n){
-    
-    for (int i = 0; i < n; ++i){
-      if(i) json += ",";
-      json += "{";
-      json += "\"rssi\":"+String(WiFi.RSSI(i));
-      json += ",\"ssid\":\""+WiFi.SSID(i)+"\"";
-      json += ",\"bssid\":\""+WiFi.BSSIDstr(i)+"\"";
-      json += ",\"channel\":"+String(WiFi.channel(i));
-      json += ",\"secure\":"+String(WiFi.encryptionType(i));
-      json += ",\"hidden\":"+String(WiFi.isHidden(i)?"true":"false");
-      json += "}";
-    }
-    WiFi.scanDelete();
-    if(WiFi.scanComplete() == -2){
-      WiFi.scanNetworks(true);
-    }
+
+
+
+server.on("/setwifi", HTTP_GET, [](AsyncWebServerRequest *request){
+  String para1;
+  String para2;
+  if (request->hasParam("ssid") && request->hasParam("key")) {
+    para1 = request->getParam("ssid")->value();
+    para2 = request->getParam("key")->value();
+    request->send(200, "text/plain", "OK");
+  } else {
+    request->send(200, "text/plain", "nothing");
   }
-  json += "]";
-  request->send(200, "application/json", json);
-  json = String();
+    
 });
+
 
 //----------------------------------------------------------------------------------------
   
@@ -182,4 +167,5 @@ server.on("/scan", HTTP_GET, [](AsyncWebServerRequest *request){
 void loop(){
   ArduinoOTA.handle();
   ws.cleanupClients();
+  do_cronjobs();
 }
